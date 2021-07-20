@@ -13,8 +13,8 @@
 		236D080F26A1C5B8008E7392 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 236D080E26A1C5B8008E7392 /* Preview Assets.xcassets */; };
 		236D081B26A5877D008E7392 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D081A26A5877D008E7392 /* CameraPreview.swift */; };
 		236D081F26A58BAC008E7392 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D081E26A58BAC008E7392 /* CameraView.swift */; };
-		236D082126A59880008E7392 /* YOLOv3FP16.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 236D082026A59880008E7392 /* YOLOv3FP16.mlmodel */; };
 		236D082326A59AA6008E7392 /* UIImage+Extenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D082226A59AA6008E7392 /* UIImage+Extenion.swift */; };
+		236D084526A6BCFF008E7392 /* CashDetector 1.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 236D084426A6BCFF008E7392 /* CashDetector 1.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +26,8 @@
 		236D081026A1C5B8008E7392 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		236D081A26A5877D008E7392 /* CameraPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		236D081E26A58BAC008E7392 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		236D082026A59880008E7392 /* YOLOv3FP16.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = YOLOv3FP16.mlmodel; path = ../../../Downloads/YOLOv3FP16.mlmodel; sourceTree = "<group>"; };
 		236D082226A59AA6008E7392 /* UIImage+Extenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extenion.swift"; sourceTree = "<group>"; };
+		236D084426A6BCFF008E7392 /* CashDetector 1.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = "CashDetector 1.mlmodel"; path = "../../../Downloads/CashDetector 1.mlmodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +60,7 @@
 		236D080626A1C5B4008E7392 /* CashCount */ = {
 			isa = PBXGroup;
 			children = (
-				236D082026A59880008E7392 /* YOLOv3FP16.mlmodel */,
+				236D084426A6BCFF008E7392 /* CashDetector 1.mlmodel */,
 				236D080726A1C5B4008E7392 /* CashCountApp.swift */,
 				236D080926A1C5B4008E7392 /* ContentView.swift */,
 				236D081E26A58BAC008E7392 /* CameraView.swift */,
@@ -152,7 +152,7 @@
 			files = (
 				236D080A26A1C5B4008E7392 /* ContentView.swift in Sources */,
 				236D080826A1C5B4008E7392 /* CashCountApp.swift in Sources */,
-				236D082126A59880008E7392 /* YOLOv3FP16.mlmodel in Sources */,
+				236D084526A6BCFF008E7392 /* CashDetector 1.mlmodel in Sources */,
 				236D082326A59AA6008E7392 /* UIImage+Extenion.swift in Sources */,
 				236D081F26A58BAC008E7392 /* CameraView.swift in Sources */,
 				236D081B26A5877D008E7392 /* CameraPreview.swift in Sources */,

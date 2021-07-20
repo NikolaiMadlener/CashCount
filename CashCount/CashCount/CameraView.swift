@@ -17,6 +17,9 @@ struct CameraView: View {
     var body: some View {
         ZStack {
             CameraPreview(camera: cameraVM).edgesIgnoringSafeArea(.top)
+            if cameraVM.isCounted {
+                Image(uiImage: cameraVM.annotatedImage).resizable().edgesIgnoringSafeArea([.top, .bottom])
+            }
             VStack {
                 if cameraVM.isTaken {
                     HStack {
@@ -44,8 +47,8 @@ struct CameraView: View {
                             })
                             .padding(.leading)
                         } else {
-                            //                            Text(String(format: "%.2f", cameraVM.cash) + "€")
-                            Text(cameraVM.classificationLabel)
+                                                        Text(String(format: "%.2f", cameraVM.cash) + "€")
+
                                 .foregroundColor(.black)
                                 .fontWeight(.semibold)
                                 .padding(.vertical, 10)
@@ -78,6 +81,7 @@ struct CameraView: View {
 class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     
     @Published var classificationLabel: String = ""
+    @Published var annotatedImage: UIImage = UIImage()
     
     @Published var isTaken = false
     @Published var isCounted = false
@@ -88,12 +92,11 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
     
     @Published var preview : AVCaptureVideoPreviewLayer!
     
-    @Published var isSaved = false
     @Published var picData = Data(count: 0)
     
     @Published var cash = 0.0
     
-    func check() {
+    func check() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized :
             setUp()
@@ -152,7 +155,7 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
             
             DispatchQueue.main.async {
                 withAnimation{self.isTaken.toggle()}
-                self.isSaved = false
+
                 self.isCounted = false
                 self.picData = Data(count: 0)
             }
@@ -173,13 +176,12 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
     }
     
     func countCash() {
-        self.isCounted = true
         updateDetections()
     }
     
     lazy var detectionRequest: VNCoreMLRequest = {
             do {
-                let model = try VNCoreMLModel(for: YOLOv3FP16().model)
+                let model = try VNCoreMLModel(for: CashDetector_1().model)
                 
                 let request = VNCoreMLRequest(model: model, completionHandler: { [weak self] request, error in
                     self?.processDetections(for: request, error: error)
@@ -196,7 +198,7 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
             print("no image")
             return
         }
-        image.resizeImageTo(size: CGSize(width: 416, height: 416))
+        //image.resizeImageTo(size: CGSize(width: 416, height: 416))
         let orientation = CGImagePropertyOrientation(rawValue: UInt32(image.imageOrientation.rawValue))
         guard let ciImage = CIImage(image: image) else { fatalError("Unable to create \(CIImage.self) from \(image).") }
         
@@ -233,7 +235,17 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
         
         image.draw(at: CGPoint.zero)
         
+        var amount = 0.0
+        
         for detection in detections {
+            
+            detection.labels.forEach{ label in
+                if label.identifier == "Euro1" && label.confidence > 0.8 {
+                    amount += 1
+                } else if label.identifier == "Cent50" && label.confidence > 0.8 {
+                    amount += 0.5
+                }
+            }
             
             print(detection.labels.map({"\($0.identifier) confidence: \($0.confidence)"}).joined(separator: "\n"))
             print("------------")
@@ -245,13 +257,18 @@ class CameraViewModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate
             UIRectFillUsingBlendMode(rectangle, CGBlendMode.normal)
         }
         
-        self.classificationLabel = detections.first?.labels.map({"\($0.identifier)"}).first ?? ""
+        self.classificationLabel = String(amount)
+        self.cash = amount
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        self.picData = newImage?.cgImage?.dataProvider?.data as Data? ?? Data(count: 0)
-        self.preview = AVCaptureVideoPreviewLayer(layer: newImage)
+        self.annotatedImage = newImage ?? UIImage()
+        //self.picData = newImage?.cgImage?.dataProvider?.data as Data? ?? Data(count: 0)
+//        self.preview = AVCaptureVideoPreviewLayer(layer: newImage)
+//        self.output = AVCapturePhotoOutput(
+        
         print("new picData")
+        self.isCounted = true
     }
 }
     

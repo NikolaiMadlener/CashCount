@@ -28,6 +28,6 @@ struct CameraPreview: UIViewRepresentable {
     func updateUIView(_ uiView: UIImageView, context: Context) {
         print("update")
         
-        uiView.image = UIImage(data: camera.picData)
+//        uiView.image = UIImage(data: camera.picData)
     }
 }
